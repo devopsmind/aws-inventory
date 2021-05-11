@@ -341,19 +341,16 @@ workbook=writer.book
 header_fmt = workbook.add_format({'bold': True,'text_wrap': True,'size':10,
                                                       'valign': 'top','fg_color': '#C1c1c1','border': 1})
 
-                                                    
-#format all sheets with replace format in header line
-for sheet in writer.sheets:  
-    for n in range(1-7):
-        for column in df + n:
-            #get size content to set column size 
-            column_length = max(df7[column].astype(str).map(len).max(), len(column)) 
-            #number column
-            col_idx = df7.columns.get_loc(column)
-            #header line
-            writer.sheets[sheet].write(0,col_idx,str(df7.columns[col_idx]),header_fmt)
-            #set size column
-            writer.sheets[sheet].set_column(col_idx, col_idx, column_length)
+dfn= {1 : df1, 2: df2 , 3 : df3 ,4 : df4 , 5 : df5 , 6 : df6 , 7 : df7}                                                   
 
+for n,sheet in enumerate(writer.sheets.values()):   
+  
+    dfs= dfn[ n + 1 ]
+    for column in dfs:
+        column_length = max(dfs[column].astype(str).map(len).max(), len(column)) 
+        col_idx = dfs.columns.get_loc(column)
+        sheet.write(0,col_idx,str(dfs.columns[col_idx]),header_fmt)
+        sheet.set_column(col_idx, col_idx, column_length)
+   
 ### Close the Pandas Excel writer and output the Excel file.
 writer.save()
