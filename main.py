@@ -343,16 +343,17 @@ header_fmt = workbook.add_format({'bold': True,'text_wrap': True,'size':10,
 
                                                     
 #format all sheets with replace format in header line
-for sheet in writer.sheets:   
-    for column in df7:
-        #get size content to set column size 
-        column_length = max(df7[column].astype(str).map(len).max(), len(column)) 
-        #number column
-        col_idx = df7.columns.get_loc(column)
-        #header line
-        writer.sheets[sheet].write(0,col_idx,str(df7.columns[col_idx]),header_fmt)
-        #set size column
-        writer.sheets[sheet].set_column(col_idx, col_idx, column_length)
-   
+for sheet in writer.sheets:  
+    for n in range(1-7):
+        for column in df + n:
+            #get size content to set column size 
+            column_length = max(df7[column].astype(str).map(len).max(), len(column)) 
+            #number column
+            col_idx = df7.columns.get_loc(column)
+            #header line
+            writer.sheets[sheet].write(0,col_idx,str(df7.columns[col_idx]),header_fmt)
+            #set size column
+            writer.sheets[sheet].set_column(col_idx, col_idx, column_length)
+
 ### Close the Pandas Excel writer and output the Excel file.
 writer.save()
